@@ -1,0 +1,25 @@
+# General
+.prettierignore
+.solhintignore
+.husky
+.gitignore
+.gitattributes
+.gitmodules
+.env
+workspace.code-workspace
+.DS_STORE
+codechecks.yml
+*.yml
+*.md
+
+# Foundry
+lib/
+cache/
+out/
+foundry.toml
+remappings.txt
+
+# Node
+node_modules
+package-lock.json
+package.json

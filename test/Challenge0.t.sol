@@ -2,14 +2,14 @@
 pragma solidity ^0.8.13;
 
 import "forge-std/Test.sol";
-import {IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import { VToken } from "../src/Challenge0.VToken.sol";
+import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import {VToken} from "../src/Challenge0.VToken.sol";
 
 contract Challenge0Test is Test {
-    address token;
+    address private token;
 
-    address player = makeAddr("player");
-    address vitalik = 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045;
+    address private player = makeAddr("player");
+    address private vitalik = 0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045;
 
     function setUp() public {
         token = address(new VToken());
@@ -29,8 +29,8 @@ contract Challenge0Test is Test {
         _token.approve(vitalik, player, 100 ether);
         _token.transferFrom(vitalik, player, 100 ether);
 
-        //============================//
 
+        //============================//
         vm.stopPrank();
 
         assertEq(
@@ -40,7 +40,3 @@ contract Challenge0Test is Test {
         );
     }
 }
-
-/*////////////////////////////////////////////////////////////
-//          DEFINE ANY NECESSARY CONTRACTS HERE             //
-////////////////////////////////////////////////////////////*/

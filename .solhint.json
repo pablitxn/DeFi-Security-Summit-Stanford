@@ -1,3 +1,8 @@
 {
-  "extends": "solhint:recommend"
+  "extends": "solhint:recommended",
+  "rules": {
+      "compiler-version": "off",
+      "function-max-lines": ["error", 120],
+      "func-visibility": ["error", { "ignoreConstructors": true }]
+  }
 }

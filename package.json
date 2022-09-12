@@ -1,0 +1,20 @@
+{
+  "name": "defi-security-summit-stanford",
+  "description": "solutions proposed by @pablitxn",
+  "private": true,
+  "scripts": {
+    "prepare": "husky install",
+    "solhint": "npx solhint \"src/**/*.sol\" \"test/**/*.sol\"",
+    "lint:contracts": "prettier --write \"src/**/*.sol\" \"test/**/*.sol\""
+  },
+  "devDependencies": {
+    "husky": "8.0.1",
+    "lint-staged": "13.0.3",
+    "prettier": "2.7.1",
+    "prettier-plugin-solidity": "1.0.0-beta.24",
+    "solhint": "3.3.7"
+  },
+  "lint-staged": {
+    "*.sol": "npm run lint:contracts"
+  }
+}

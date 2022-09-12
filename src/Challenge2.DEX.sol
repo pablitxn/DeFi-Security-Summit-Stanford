@@ -27,7 +27,7 @@ contract InsecureDexLP {
     mapping(address => uint256) private _balances;
 
     /* @dev token0Address, token1Address Addresses of the tokens
-     * participating in the liquidity pool 
+     * participating in the liquidity pool
      */
     constructor(address token0Address, address token1Address) {
         token0 = IERC20(token0Address);
@@ -76,16 +76,16 @@ contract InsecureDexLP {
             amount0 = (amount * reserve0) / totalSupply;
             amount1 = (amount * reserve1) / totalSupply;
         }
-        require(amount0 > 0 && amount1 > 0, 'InsecureDexLP: INSUFFICIENT_LIQUIDITY_BURNED');
-        
+        require(amount0 > 0 && amount1 > 0, "InsecureDexLP: INSUFFICIENT_LIQUIDITY_BURNED");
+
         token0.safeTransfer(msg.sender, amount0);
         token1.safeTransfer(msg.sender, amount1);
-        
+
         unchecked {
             _balances[msg.sender] -= amount;
             totalSupply -= amount;
         }
-        
+
         _updateReserves();
     }
 
@@ -115,7 +115,7 @@ contract InsecureDexLP {
         } else if (tokenIn == address(token1)) {
             output = _calcAmountsOut(amountIn, reserve1, reserve0);
         } else {
-            revert('Token is not supported');
+            revert("Token is not supported");
         }
     }
 

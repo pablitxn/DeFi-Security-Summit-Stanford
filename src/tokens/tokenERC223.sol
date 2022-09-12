@@ -5,7 +5,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {Address} from "@openzeppelin/contracts/utils/Address.sol";
 
 contract SimpleERC223Token is ERC20 {
-    constructor(uint256 _supply) ERC20("Simple ERC223 Token", "SET") { 
+    constructor(uint256 _supply) ERC20("Simple ERC223 Token", "SET") {
         _mint(msg.sender, _supply);
     }
 
@@ -17,7 +17,7 @@ contract SimpleERC223Token is ERC20 {
             // instead of a try catch perhaps we should use a ERC165...
             // the tokenFallback function is run if the contract has this function
             (bool success, bytes memory result) = to.call(abi.encodeWithSignature("tokenFallback(address,uint256,bytes)", msg.sender, amount, ""));
-            require(success, 'TokenFallback not implemented');
+            require(success, "TokenFallback not implemented");
         }
     }
 }
