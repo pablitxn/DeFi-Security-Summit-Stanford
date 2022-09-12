@@ -8,24 +8,22 @@ import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {InSecureumLenderPool} from "../src/Challenge1.lenderpool.sol";
 import {InSecureumToken} from "../src/tokens/tokenInsecureum.sol";
 
-
 contract Challenge1Test is Test {
-    InSecureumLenderPool target; 
+    InSecureumLenderPool target;
     IERC20 token;
 
     address player = makeAddr("player");
 
     function setUp() public {
-
         token = IERC20(address(new InSecureumToken(10 ether)));
-        
+
         target = new InSecureumLenderPool(address(token));
         token.transfer(address(target), 10 ether);
-        
+
         vm.label(address(token), "InSecureumToken");
     }
 
-    function testChallenge() public {        
+    function testChallenge() public {
         vm.startPrank(player);
 
         /*//////////////////////////////
@@ -36,10 +34,8 @@ contract Challenge1Test is Test {
         FlashLoandReceiverSample _flashLoanReceiver = new FlashLoandReceiverSample();
 
         target.flashLoan(
-          address(_flashLoanReceiver),
-          abi.encodeWithSignature(
-            "receiveFlashLoan(address)", player
-          )
+            address(_flashLoanReceiver),
+            abi.encodeWithSignature("receiveFlashLoan(address)", player)
         );
         //===
 
@@ -51,7 +47,6 @@ contract Challenge1Test is Test {
     }
 }
 
-
 /*////////////////////////////////////////////////////////////
 //          DEFINE ANY NECESSARY CONTRACTS HERE             //
 ////////////////////////////////////////////////////////////*/
@@ -59,7 +54,10 @@ contract Challenge1Test is Test {
 // @dev this is a demo contract that is used to receive the flash loan
 contract FlashLoandReceiverSample {
     IERC20 public token;
-    function receiveFlashLoan(address _user /* other variables */) public {
+
+    function receiveFlashLoan(
+        address _user /* other variables */
+    ) public {
         // check tokens before doing arbitrage or liquidation or whatever
         uint256 balanceBefore = token.balanceOf(address(this));
 
@@ -76,4 +74,5 @@ contract FlashLoandReceiverSample {
 
 // @dev this is the solution
 contract Exploit {
+
 }

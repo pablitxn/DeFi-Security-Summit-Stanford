@@ -10,7 +10,6 @@ import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
  * https://github.com/martriay/scAMM/blob/main/contracts/Exchange.sol
  */
 contract InsecureDexLP {
-
     using SafeERC20 for IERC20;
 
     IERC20 public immutable token0;
@@ -42,7 +41,7 @@ contract InsecureDexLP {
 
     // @dev Allows users to add liquidity for token0 and token1
     function addLiquidity(uint256 amount0, uint256 amount1) external {
-        uint liquidity;
+        uint256 liquidity;
 
         token0.safeTransferFrom(msg.sender, address(this), amount0);
         token1.safeTransferFrom(msg.sender, address(this), amount1);
@@ -55,9 +54,12 @@ contract InsecureDexLP {
          */
         if (_totalSupply == 0) {
             liquidity = Math.sqrt(amount0 * amount1);
-        // @dev If liquidity exists, update shares with supplied amounts
+            // @dev If liquidity exists, update shares with supplied amounts
         } else {
-            liquidity = Math.min((amount0 * _totalSupply) / reserve0, (amount1 *_totalSupply) / reserve1);
+            liquidity = Math.min(
+                (amount0 * _totalSupply) / reserve0,
+                (amount1 * _totalSupply) / reserve1
+            );
         }
 
         // @dev Update balances with the new values
@@ -70,7 +72,7 @@ contract InsecureDexLP {
     }
 
     // @dev Burn LP shares and get token0 and token1 amounts back
-    function removeLiquidity(uint256 amount) external returns (uint amount0, uint amount1) {
+    function removeLiquidity(uint256 amount) external returns (uint256 amount0, uint256 amount1) {
         require(_balances[msg.sender] >= amount);
         unchecked {
             amount0 = (amount * reserve0) / totalSupply;
@@ -90,9 +92,19 @@ contract InsecureDexLP {
     }
 
     // @dev Swap amountIn of tokenFrom to tokenTo
-    function swap(address tokenFrom, address tokenTo, uint256 amountIn) external returns(uint256 amountOut) {
-        require(tokenFrom == address(token0) || tokenFrom == address(token1), "tokenFrom is not supported");
-        require(tokenTo == address(token0) || tokenTo == address(token1), "tokenTo is not supported");
+    function swap(
+        address tokenFrom,
+        address tokenTo,
+        uint256 amountIn
+    ) external returns (uint256 amountOut) {
+        require(
+            tokenFrom == address(token0) || tokenFrom == address(token1),
+            "tokenFrom is not supported"
+        );
+        require(
+            tokenTo == address(token0) || tokenTo == address(token1),
+            "tokenTo is not supported"
+        );
 
         if (tokenFrom == address(token0)) {
             amountOut = _calcAmountsOut(amountIn, reserve0, reserve1);
@@ -109,7 +121,11 @@ contract InsecureDexLP {
     /* @dev Given an amountIn of tokenIn, compute the corresponding output of
      * tokenOut
      */
-    function calcAmountsOut(address tokenIn, uint256 amountIn) external view returns(uint256 output) {
+    function calcAmountsOut(address tokenIn, uint256 amountIn)
+        external
+        view
+        returns (uint256 output)
+    {
         if (tokenIn == address(token0)) {
             output = _calcAmountsOut(amountIn, reserve0, reserve1);
         } else if (tokenIn == address(token1)) {
@@ -120,21 +136,27 @@ contract InsecureDexLP {
     }
 
     // @dev See balance of user
-    function balanceOf(address user) external view returns(uint256) {
+    function balanceOf(address user) external view returns (uint256) {
         return _balances[user];
     }
 
     /* @dev taken from uniswap library;
      * https://github.com/Uniswap/v2-periphery/blob/master/contracts/libraries/UniswapV2Library.sol#L43
      */
-    function _calcAmountsOut(uint256 amountIn, uint256 reserveIn, uint256 reserveOut) internal pure returns(uint256 amountOut) {
+    function _calcAmountsOut(
+        uint256 amountIn,
+        uint256 reserveIn,
+        uint256 reserveOut
+    ) internal pure returns (uint256 amountOut) {
         amountIn = amountIn * 1000;
-        uint numerator = amountIn * reserveOut;
-        uint denominator = reserveIn * 1000 + amountIn;
+        uint256 numerator = amountIn * reserveOut;
+        uint256 denominator = reserveIn * 1000 + amountIn;
         amountOut = (numerator / denominator);
     }
 
-    function tokenFallback(address, uint256, bytes memory) external {
-
-    }
+    function tokenFallback(
+        address,
+        uint256,
+        bytes memory
+    ) external {}
 }

@@ -29,7 +29,6 @@ contract Challenge0Test is Test {
         _token.approve(vitalik, player, 100 ether);
         _token.transferFrom(vitalik, player, 100 ether);
 
-
         //============================//
         vm.stopPrank();
 
